@@ -1,0 +1,245 @@
+
+
+https://docs.amplify.aws/cli/auth/groups/
+
+----------------------------------------
+
+https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/
+
+1-
+npx create-react-app amplifyapp
+cd amplifyapp
+npm start
+
+2-
+init github repo
+
+created repo amplify-react-graphql in github
+push an existing repository from the command line 
+
+git init
+git add .
+git commit -m "initial commit"
+
+Push the application to the new GitHub repo :
+
+git remote add origin https://github.com/taniaherrerop/amplify-react-graphql.git
+git branch -M main
+git push -u origin main
+
+3-
+Deploy to AWS Amplify
+
+we have the app runing in  AWS amplify
+
+
+4-
+Edit src/App.js , mache changes
+
+git add .
+git commit -m “changes for v2”
+git push origin main
+
+--in aws amplicy will se in hosting env the pipeline ci/cd runing, when finish see the app updated 
+--------------
+
+5-
+Install and configure the Amplify CLI
+
+npm install -g @aws-amplify/cli
+amplify configure
+us-east-1
+user name: amplify-user  -->create user in iam, get sectret/accesskey,(download) then copy om the prompt
+profile name:amplify-user 
+
+ 
+ 6-  
+ Add Authentication
+
+We will need two Amplify libraries :
+npm install aws-amplify @aws-amplify/ui-react --save
+
+create the authentication service:
+amplify init
+
+Anwser:
+Note: It is recommended to run this command from the root of your app directory
+? Enter a name for the project amplifyapp
+The following configuration will be applied:
+
+Project information
+| Name: amplifyapp
+| Environment: dev
+| Default editor: Visual Studio Code
+| App type: javascript
+| Javascript framework: react
+| Source Directory Path: src
+| Distribution Directory Path: build
+| Build Command: npm.cmd run-script build
+| Start Command: npm.cmd run-script start
+
+? Initialize the project with the above configuration? Yes
+Using default provider  awscloudformation
+? Select the authentication method you want to use: AWS profile
+
+For more information on AWS Profiles, see:
+https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html
+
+? Please choose the profile you want to use amplify-user
+Adding backend environment dev to AWS Amplify app: d3mhqlgwpunhf4
+
+Your project has been successfully initialized and connected to the cloud!
+
+Some next steps:
+"amplify status" will show you what you've added already and if it's locally configured or deployed
+"amplify add <category>" will allow you to add features like user login or a backend API
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify console" to open the Amplify Console and view your project status
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+Pro tip:
+Try "amplify add api" to create a backend API and then "amplify push" to deploy everything
+
+
+7-amplify add auth
+
+? Do you want to use the default authentication and security configuration? Default configuration
+? How do you want users to be able to sign in? Username
+? Do you want to configure advanced settings? No, I am done.
+
+Anwser:
+✅ Successfully added auth resource amplifyapp4bb0011d locally
+
+✅ Some next steps:
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+8- Deploy teh auth service
+amplify push --y
+
+To configure our app with these resources modify src/index.js
+
+import { Amplify } from 'aws-amplify';
+import config from './aws-exports';
+Amplify.configure(config);
+
+9- 
+Add auth flow:
+
+in src/App.js -->add the code in documentattion
+
+we've used the withAuthenticator component. This component will scaffold out an entire user authentication flow allowing users to sign up, sign in, reset their password, and confirm sign-in for multifactor authentication (MFA). We have also added a Sign Out button to log users out.
+
+10-
+Run the app locally:
+
+
+
+npm audit fix --force
+amplify push
+npm run start
+
+Create Account (in Amplify app)
+user: taniahoscarlitos@gmail.com 
+pass:tthhpp2008
+
+11-
+configure the Amplify build process to add the backend as part of the continuous deployment workflow
+
+amplify console
+? Which site do you want to open? AWS console
+
+This will open the Amplify console. From the navigation pane, 
+choose App settings > Build settings and modify it to add the backend section (lines 2-7 in the code below) 
+to your amplify.yml. After making the edits, choose Save.
+
+amplify pull --appId d3mhqlgwpunhf4 --envName dev
+... continue with docs
+
+git add .
+git commit -m “added auth”
+git push origin main
+
+
+create service role para amplify
+https://docs.aws.amazon.com/amplify/latest/userguide/how-to-service-role-amplify-console.html
+in  aws amplify, select this role
+
+
+modify code ans submit to github, wait the deployment and resfresh page ex: https://main.dajdesh7o5c33.amplifyapp.com/
+
+------------
+
+create user groups
+
+https://docs.amplify.aws/cli/auth/groups/
+amplify add auth
+Auth has already been added to this project. To update run amplify update auth.
+
+amplify update auth
+
+Please note that certain attributes may not be overwritten if you choose to use defaults settings.
+Using service: Cognito, provided by: awscloudformation
+ What do you want to do? Create or update Cognito user pool groups
+? Provide a name for your user pool group: Admin   
+? Do you want to add another User Pool Group Yes
+? Provide a name for your user pool group: Url
+? Do you want to add another User Pool Group Yes
+? Provide a name for your user pool group: File
+? Do you want to add another User Pool Group No
+√ Sort the user pool groups in order of preference · Admin, Url, File
+✅ Successfully updated auth resource amplifyapp4bb0011d locally
+
+amplify push
+
+
+
+---------------------
+https://docs.amplify.aws/cli/auth/admin/
+Admin actions
+Admin Actions allow you to execute queries and operations against users and groups in your Cognito user pool.
+
+Enable Admin Queries
+
+amplify update auth
+
+Please note that certain attributes may not be overwritten if you choose to use defaults settings.
+Using service: Cognito, provided by: awscloudformation
+ What do you want to do? Create or update Admin queries API
+? Do you want to restrict access to the admin queries API to a specific Group Yes
+? Select the group to restrict access with: Admin
+✅ Successfully added AdminQueries2ed503a3 function locally
+✅ Successfully added AdminQueries API locally
+✅ Successfully updated auth resource amplifyapp4bb0011d locally
+
+✅ Some next steps:
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+✅ Successfully updated resource update locally
+
+✅ Some next steps:
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+amplify push
+
+
+-----------
+Admin Queries API
+https://docs.amplify.aws/cli/auth/admin/#enable-admin-queries
+
+REST API endpoint: https://jvnv78et5j.execute-api.us-east-1.amazonaws.com/dev
+
+------------
+
+add pages to app to test -- add user to group
+https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
+
+npm install react-router-dom --save
+npm install --save styled-components --save
+
+npm audit fix --force
+
+---
+https://docs.amplify.aws/cli/auth/admin/#example

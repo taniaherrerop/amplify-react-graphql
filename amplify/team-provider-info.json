@@ -13,7 +13,17 @@
     },
     "categories": {
       "auth": {
-        "amplifyapp4bb0011d": {}
+        "amplifyapp4bb0011d": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries2ed503a3": {
+          "deploymentBucketName": "amplify-amplifyapp-dev-145417-deployment",
+          "s3Key": "amplify-builds/AdminQueries2ed503a3-592f584a725131567952-build.zip"
+        }
+      },
+      "api": {
+        "AdminQueries": {}
       }
     }
   }
